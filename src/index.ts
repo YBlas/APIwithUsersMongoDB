@@ -65,7 +65,7 @@ app.get('/testlogin', async (req: Request, res: Response) => {
 
 //--------------------------> Acceder a los personajes de Rick&Morty si estás registrado
 
-const getCharacters = async (request: Request, response: Response, next: NextFunction) => {
+const getCharacters = async (request: Request, response: Response) => {
     const db: Db = await request.app.get("db");
     if (userFinal != '' && passFinal != '') {
         db.collection("RickMorty").find().toArray().then((elem) => {
@@ -76,6 +76,13 @@ const getCharacters = async (request: Request, response: Response, next: NextFun
 };
 
 app.get('/RickMorty', getCharacters);
+
+//--------------------------> Acción antes de cada request
+
+app.use((req, res, next)=>{
+    console.log(JSON.stringify(req.headers.mosterotic));
+    next();
+})
 
 const port = process.env.PORT || 6969;
 
